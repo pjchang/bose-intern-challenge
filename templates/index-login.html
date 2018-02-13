@@ -130,6 +130,7 @@
             <form id="signup" method="post">
                 <h3 style='text-align: center'>Sign in!</h3>
                 <div class="underline"></div>
+                <div style='color:red'> {{error_msg}} </div>
                 <label for="name">Name</label>
                 <input class="text" name="username" id="username" class="form-control" type="text" placeholder="Username" required autofocus>
                 <label for="password">Password</label>
@@ -138,7 +139,7 @@
                     <input type="submit" name="submit_reg" class="login login-submit btn" value="Submit">
                 </div>
                 <div class="login-help">
-                    Don't have account yet?  <a href="/register">Register</a> 
+                    Don't have an account yet?  <a href="/register">Register</a> 
                 </div>
             </form>
         </div>

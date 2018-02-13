@@ -67,11 +67,12 @@
             <div class="container-fluid gallery">
                 {% if albums is defined %} {% for album in albums %}
                 <div class="grid-item">
-                    <a class="grid-a" href="{{ url_for('gallery', album_name=album, owner_name=owner_name) }}">
+                    <a class="grid-a" href="{{ url_for('gallery', album_name=album, owner_name=session['user_curr']) }}">
                         <img class="albumImg" src='https://cdn2.iconfinder.com/data/icons/perfect-flat-icons-2/512/Closed_folder_open_add_upload.png' onmouseover="this.src='https://cdn2.iconfinder.com/data/icons/perfect-flat-icons-2/512/Open_folder_blue_upload_yellow.png';" onmouseout="this.src='https://cdn2.iconfinder.com/data/icons/perfect-flat-icons-2/512/Closed_folder_open_add_upload.png';" alt="album {{ album }}" title="Album {{ album }}" />
                         <div class="centered">{{ album }}</div>
                     </a>
-                    <button class="btn photo_del_btn" data-albumname="{{ album }}" data-toggle="modal" data-target="#delModel">Delete</button>
+                    <!-- <button class="btn photo_del_btn" data-albumname="{{ album }}" data-toggle="modal" data-target="#delModel">Delete</button> -->
+                    <button class="btn  album_del_btn" data-albumname="{{ album }}">Delete</button>
                 </div>
                 {% endfor %} {% else %}
                 <div class="col-lg-3 ">

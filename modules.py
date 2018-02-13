@@ -44,11 +44,11 @@ class Login:
 
     # Constructor
     def __init__(self):
-        # self.client = MongoClient(host='localhost', port=27017)
-        # self.db = self.client['Bose']
-        self.connection = MongoClient('ds231568.mlab.com', 31568)
-        self.db = self.connection['bose']
-        self.db.authenticate('admin', 'pass')
+        self.client = MongoClient(host='localhost', port=27017)
+        self.db = self.client['Bose']
+        #self.connection = MongoClient('ds231568.mlab.com', 31568)
+        #self.db = self.connection['bose']
+        #self.db.authenticate('admin', 'pass')
 
     # login existing user
     def sign_in(self,username,password):

@@ -75,10 +75,12 @@
             <div class="container-fluid gallery">
                 {% if photos is defined %} {% for photo in photos %}
                 <div class="grid-item">
-                    <a class="grid-a" href="/{{gallery_folder}}{{owner_name}}/{{album_name}}/{{photo}}">
+                    <a class="grid-a" href="{{photo['img']}}">
                         <canvas></canvas>
-                    </a>
-                    <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}" data-toggle="modal" data-target="#delModel">Delete</button>
+                    <a>
+                    
+                    <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo['id']}}" data-ownername="{{owner_name}}" >Delete</button>
+                    <!-- <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo['id']}}" data-ownername="{{owner_name}}" data-toggle="modal" data-target="#delModel">Delete</button> -->
                 </div>
                 {% endfor %} {% else %}
                 <div class="col-lg-3 ">
@@ -163,8 +165,6 @@
             gallery: { enabled: true },
             midClick: true
         });
-
-
         /* render picture in canva
         -----------------------------------------*/
         $('.grid-item').height($('.grid-item').width())
@@ -195,14 +195,10 @@
 
         // Remove preloader (https://ihatetomatoes.net/create-custom-preloading-screen/)
         $('body').addClass('loaded');
-
         // Write current year in copyright text.
         $(".tm-copyright-year").text(new Date().getFullYear());
-
-
-
     });
     </script>
 </body>
 
-</html>
+<!-- </html> -->
