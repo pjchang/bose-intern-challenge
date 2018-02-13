@@ -1,69 +1,41 @@
 import os
 from definition import *
 import json
+from pymongo import MongoClient
 
-class Gallery:
+class Albums:
 
     def __init__(self):
+        # self.client = MongoClient(host='localhost', port=27017)
+        # self.db = self.client['Bose']
         pass
 
-    '''
-    * Read folder names inside photo folder
-    * @param
-    *   NONE
-    *
-    * @return
-    *   $final (ARRAY)
-    '''
-    def get_all_gallery(self):
-        galleries = [name for name in os.listdir(Gallery_Folder)]
+    def get_all_albums(self,username):
+        if not os.path.isdir(Gallery_Folder+username+"/"):
+            os.mkdir(Gallery_Folder+username+"/")
+        galleries = [name for name in os.listdir(Gallery_Folder+username+"/")]
         return galleries
 
-    '''
-    * Create folder using the name argument
-    * @param
-    *   $name (string)
-    *
-    * @return
-    *   Boolean
-    '''
-    def add_gallery(self,gallery_name):
-        if os.path.isdir(Gallery_Folder+gallery_name) is False:
-            if os.mkdir(Gallery_Folder+gallery_name):
+    def add_album(self,album_name,username):
+        if os.path.isdir(Gallery_Folder+username+"/"+album_name) is False:
+            if os.mkdir(Gallery_Folder+username+"/"+album_name):
                 return True
         else:
             return False
 
-
-    '''
-    * Delete folder using the name argument
-    * @param
-    *   $name (string)
-    *
-    * @return
-    *   Boolean
-    '''
-    def delete_gallery(self, gallery_name):
-        if os.path.isdir(Gallery_Folder+gallery_name) is True:
-            if os.removedirs(Gallery_Folder+gallery_name):
+    def delete_album(self, album_name,username):
+        if os.path.isdir(Gallery_Folder+username+"/"+album_name) is True:
+            if os.removedirs(Gallery_Folder+username+"/"+album_name):
                 return True
             else:
                 return False
         else:
             return False
 
-    '''
-    * rename a gallery folder name
-    * @param
-    *   $currentName (string)
-    *   $newName (string)
-    *
-    * @return
-    *   Boolean
-    '''
-    def edit_gallery_name(self,oldName,newName):
-        if os.path.isdir(Gallery_Folder+oldName) is True:
-            if os.rename(Gallery_Folder+oldName, Gallery_Folder+newName):
+
+    def edit_gallery_name(self,oldName,newName,username):
+        if os.path.isdir(Gallery_Folder+username+"/"+oldName) is True:
+            if os.rename(Gallery_Folder+username+"/"+oldName, Gallery_Folder+username+"/"+newName):
                 return True
         else:
             return False
@@ -72,45 +44,30 @@ class Login:
 
     # Constructor
     def __init__(self):
-        pass
+        self.client = MongoClient(host='localhost', port=27017)
+        self.db = self.client['Bose']
+        #self.connection = MongoClient('ds231568.mlab.com', 31568)
+        #self.db = self.connection['bose']
+        #self.db.authenticate('admin', 'pass')
 
-    '''
-    * Handle the login feature
-    * @param username(string)
-    * @param password(string)
-    *
-    * @return Boolean
-    '''
-    def login(self,username,password):
-        data = {}
-        logincreds = self.getcredentials()
+    # login existing user
+    def sign_in(self,username,password):
+        user=self.db.users.find_one({'name':username,'pass':password})
+        return True if user else False
 
-        for key in logincreds:
-            if logincreds[key]['user'] == username and logincreds[key]['password'] == password:
-                data['type'] = logincreds[key]['type']
-                data['result'] = True
 
-                return data
-        return False
-
-    '''
-    * Handle the logout feature by destroying session
-    * @param NONE
-    *
-    * @return Boolean
-    '''
     def logout(self):
         pass
 
-    '''
-    * Read Credentials JSON file to get saved username and password
-    * @param NONE
-    *
-    * @return Array
-    '''
-    def getcredentials(self):
-        data = json.loads(open(CREDENTIALS_FILE).read())
-        return data['credentials']
+    def register(self, username,password, email):
+
+        # check if the username has been claimed
+        user_pre = self.db.users.find_one({'name':username})
+        if user_pre:
+            return {'status':False,'error':'username has been claimed'}
+        self.db.users.insert({'name':username,'pass':password,'email':email})
+        return {'status':True,'error':''}
+
 
 
 class Photos:
@@ -118,28 +75,14 @@ class Photos:
     def __init__(self):
         pass
 
-    '''
-    * Read photos names inside photo folder
-    * @param gallery_name (String)
-    *
-    * @return
-    *   $final (ARRAY)
-    '''
-    def get_all_gallery_photos(self, gallery_name):
-        photos = [name for name in os.listdir(Gallery_Folder+gallery_name) if(name.split(".")[0] != "Thumbs")]
+    def get_photos(self, album_name,username):
+        photos = [name for name in os.listdir(Gallery_Folder+username+"/"+album_name) if(name.split(".")[0] != "Thumbs")]
         return photos
 
-    '''
-    * Delete image using the name argument
-    * @param gallery_name (string)
-    * @param photo_name (string)
-    *
-    * @return
-    *   Boolean
-    '''
-    def delete_gallery_photos(self, gallery_name, photo_name):
-        if os.path.exists(Gallery_Folder + gallery_name+"/"+photo_name) is True:
-            if os.remove(Gallery_Folder+gallery_name+"/"+photo_name):
+    def delete_photos(self, album_name, photo_name,username):
+        if os.path.exists(Gallery_Folder+username+"/" + album_name+"/"+photo_name) is True:
+            print 'find photo'
+            if os.remove(Gallery_Folder+username+"/"+album_name+"/"+photo_name):
                 return True
             else:
                 return False

@@ -1,1 +1,0 @@
-# bose-intern-challenge

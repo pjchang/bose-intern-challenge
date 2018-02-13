@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photoe page</title>
+    <!-- load css for font style -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <!-- load css for Font Awesome -->
+    <link href="{{ url_for('static', filename='photo_static/Font-Awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet">
+    <!-- load css for Bootstrap -->
+    <link href="{{ url_for('static', filename='photo_static/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- load css for magnificpopuo -->
+    <link href="{{ url_for('static', filename='photo_static/css/magnific-popup.css') }}" rel="stylesheet">
+    <!-- load css for customized css -->
+    <link href="{{ url_for('static', filename='photo_static/css/photos_css.css') }}" rel="stylesheet">
+    <!-- jQuery (https://jquery.com/download/) -->
+    <script type="text/javascript" src="../../static/photo_static/js/jquery-1.11.3.min.js?ver=0127s"></script>
+    <style>
+    .form-control {
+        height: 50px;
+    }
+
+    .filter_btn {
+        height: 50px;
+        /*border:1px solid black;*/
+        border-radius: 5px;
+        box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.5);
+        font-size: 25px;
+        color: white
+    }
+
+    .input-group {
+        margin-right: 40px
+    }
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- Navigation -->
+        <div class="nav_div">
+            <nav class="navbar">
+                <div>
+                    <a class="navbar-brand text-uppercase" href="#"><i class="fa fa-picture-o tm-brand-icon"></i>Fluid Gallery</a>
+<!--                     <div class="collapse navbar-toggleable-md text-xs-center text-uppercase tm-navbar" id="tmNavbar">
+                                                    <ul class="nav navbar-nav">
+                                <li class="nav-item active selected">
+                                    <a class="nav-link" href="#0" data-no="1">1st fluid <span class="sr-only">(current)</span></a>
+                                </li>                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#0" data-no="2">2nd fluid</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#0" data-no="3">3rd fluid</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#0" data-no="4">Columns</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#0" data-no="5">Message</a>
+                                </li>
+                            </ul>
+                    </div> -->
+                </div>
+            </nav>
+        </div>
+        <div class="content">
+            <div class='row' style='margin-top:10px'>
+                <div class="col-md-4" style='float: left'>
+                    <a class="text-uppercase" href="/" style='color:black'>
+                        <i class="fa fas fa-chevron-left" style='font-size: 30px; padding:10px;'> </i>
+                         Back to albums
+                    </a>
+                </div>
+                <div class="col-md-7" style='float: right; margin-right:20px'>
+                    <form action="/album/{{album_name}}/{{owner_name}}/upload" method="post" enctype="multipart/form-data" style='width:90%;display:inline-block;float: left;'>
+                        <div class="input-group">
+                            <input type="file" name="file" class="form-control" placeholder="Upload photo" accept="image/jpeg">
+                            <input type="hidden" name="galleryName" value="{{album_name}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default filter_btn" type="submit"><i class="fa fal fa-cloud-upload"></i></button>
+                             </span>
+                        </div>
+                    </form>
+                    <button id='share_btn' class="btn btn-default filter_btn" style='display:inline-block; margin-left: 20px' data-toggle="modal" data-target="#shareModal"><i class="fa fas fa-share-square" style='padding:10%'></i></button>
+                    <div><strong>Only Image files are allowed</strong></div>
+                </div>
+            </div>
+            <div class="container-fluid gallery">
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-01.jpg">
+                        <canvas ></canvas>
+                    </a>
+                    <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}" data-toggle="modal" data-target="#delModel" >Delete</button>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-03.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-04.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-05.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-06.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-07.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-08.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-09.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="/static/photo_static/img/tm-img-10.jpg">
+                        <canvas></canvas>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p class="tm-copyright-text">Copyright &copy; <span class="tm-copyright-year">current year</span> Your Company | Design: Bose UI Challenge</p>
+    </footer>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="shareModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Share this album</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You may share this album by the following link.</p>
+                    <input id="share_link" type="text" value="Select a part of this text!" style='width:100%'>
+                    <p id='link_copy_indicator' style='color:red; opacity:0'>Link copied!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delModel" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Share this album</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You sure you gonna to delete this</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- load us -->
+     <script type="text/javascript " src="../../static/photo_static/js/tether.min.js?ver=0127s "></script>
+    <!-- Tether   -->
+    <script type="text/javascript " src="../../static/photo_static/js/bootstrap.min.js?ver=0127s "></script>
+    <!-- Bootstrap js v4  -->
+    <script type="text/javascript " src="../../static/photo_static/js/jquery.magnific-popup.min.js?ver=0127s "></script>
+    <!-- Magnific popup -->
+    <script type="text/javascript" src="../../static/js/myscript.js?ver=sssass"></script>
+    <script>
+    $(window).load(function() {
+
+        /*share link and photo delete listener*/
+        $('#shareModal').on('hidden.bs.modal', function() {
+            $('#link_copy_indicator').css('opacity', '0')
+        })
+
+        $('#share_link').val(window.location.toString());
+        $("#share_link").click(function() {
+            this.select();
+            document.execCommand('copy');
+            $('#link_copy_indicator').css('opacity', '1')
+        });
+
+        /* magnificPopup pop up initiate
+        -----------------------------------------*/
+        $('.gallery').magnificPopup({
+            delegate: 'a', // child items selector, by clicking on it popup will open
+            type: 'image',
+            gallery: { enabled: true },
+            midClick: true 
+        });
+
+
+        /* render picture in canva
+        -----------------------------------------*/
+        $('.grid-item').height($('.grid-item').width())
+        for (var i = 0; i < document.getElementsByTagName("canvas").length; i++) {
+            var canvas = document.getElementsByTagName("canvas")[i];
+            canvas.width = $('.grid-item').width();
+            canvas.height = $('.grid-item').height();
+            //var ctx = document.getElementsByTagName("canvas")[i].getContext('2d'),
+            var ctx = canvas.getContext('2d');
+            image = new Image();
+            (function(ctx, image) {
+                image.onload = function() {
+                    math_min = Math.min(image.height, image.width)
+                    if (image.height < image.width) {
+                        start = (image.width - math_min) / 2
+                        ctx.drawImage(image, start, 0, math_min, math_min,
+                            0, 0, canvas.width, canvas.height);
+                    } else {
+                        start = (image.height - math_min) / 2
+                        ctx.drawImage(image, 0, start, math_min, math_min,
+                            0, 0, canvas.width, canvas.height);
+                    }
+                }
+                image.src = document.getElementsByTagName("canvas")[i].parentElement.href;
+            })(ctx, image);
+        }
+
+        // Remove preloader (https://ihatetomatoes.net/create-custom-preloading-screen/)
+        $('body').addClass('loaded');
+
+        // Write current year in copyright text.
+        $(".tm-copyright-year").text(new Date().getFullYear());
+
+
+
+    });
+    </script>
+</body>
+
+</html>
