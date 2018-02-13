@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photoe page</title>
+    <!-- load css for font style -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <!-- load css for Font Awesome -->
+    <link href="{{ url_for('static', filename='photo_static/Font-Awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet">
+    <!-- load css for Bootstrap -->
+    <link href="{{ url_for('static', filename='photo_static/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- load css for magnificpopuo -->
+    <link href="{{ url_for('static', filename='photo_static/css/magnific-popup.css') }}" rel="stylesheet">
+    <!-- load css for customized css -->
+    <link href="../../static/photo_static/css/photos_css.css?ver=0127sssf" rel="stylesheet">
+    <!-- jQuery (https://jquery.com/download/) -->
+    <script type="text/javascript" src="../../static/photo_static/js/jquery-1.11.3.min.js?ver=0127s"></script>
+    <style>
+    .form-control {
+        height: 50px;
+    }
+
+    .filter_btn {
+        height: 50px;
+        /*border:1px solid black;*/
+        border-radius: 5px;
+        box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.5);
+        font-size: 25px;
+        color: white
+    }
+
+    .input-group {
+        margin-right: 40px
+    }
+    </style>
+    <style type="text/css">
+    #signup {
+        font-family: 'Merriweather Sans', sans-serif;
+        font-size: 1.25em;
+        line-height: 1.75em;
+        color: white;
+        border-radius: 4px;
+        /*background: linear-gradient(45deg, #4558ff, #33bcff);*/
+        background: #2E3740;
+        box-shadow: 0 15px 50px -15px #777;
+        width: 350px;
+        height: 600px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.62em;
+    }
+
+    #signup label,
+    #signup input {
+        display: block;
+        color: white;
+        font-size: 1em;
+    }
+
+    {
+        background: white;
+        margin: -1.75em auto 0;
+        height: 0.23em;
+        width: 3em;
+    }
+
+
+    .text,
+    .password {
+        border-radius: 3px 3px 0 0;
+        caret-color: white;
+        margin-top: -0.62em;
+        padding: 0.62em 1em;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-bottom: 0.14em solid rgba(255, 255, 255, 0.75);
+        transition: background 0.33s, border-bottom 0.33s;
+    }
+
+    .text:focus,
+    .password:focus {
+        background: rgba(255, 255, 255, 0);
+        border-bottom: 0.23em solid rgba(255, 255, 255, 1);
+        outline: none;
+    }
+
+    .text:hover,
+    .password:hover {
+        caret-color: white;
+    }
+
+    #signup .btn {
+        border-radius: 3px;
+        box-shadow: 0 10px 30px -10px #444;
+        font-weight: bold;
+        font-size: 1em;
+        margin: 1em auto 0.62em;
+        height: auto;
+        padding: 0.62em 1em;
+        background-color: #55ff9f;
+        color: white;
+        transition: box-shadow 1s;
+    }
+
+    #signup .btn:hover {
+        bac kground-color: green;
+    }
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- Navigation -->
+        <div class="nav_div">
+            <nav class="navbar">
+                <div>
+                    <a class="navbar-brand text-uppercase" href="#"><i class="fa fa-picture-o tm-brand-icon"></i>Sign in</a>
+                    <p class='login_indi'> Hi XX
+                        <br> <a style='float:right;font-size:15px;color:white' href="{{ url_for('do_logout') }}">Sign Out</a></p>
+                </div>
+            </nav>
+        </div>
+
+        <div class="content">
+            <form id="signup" method="post">
+                <h3 style='text-align: center'>Sign in!</h3>
+                <div class="underline"></div>
+                <label for="name">Name</label>
+                <input class="text" name="username" id="username" class="form-control" type="text" placeholder="Username" required autofocus>
+                <label for="password">Password</label>
+                <input class="password" type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                <div>
+                    <input type="submit" name="submit_reg" class="login login-submit btn" value="Submit">
+                </div>
+                <div class="login-help">
+                    Don't have account yet?  <a href="/register">Register</a> 
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer class="footer">
+        <p class="tm-copyright-text">Copyright &copy; <span class="tm-copyright-year">current year</span> Your Company | Design: Bose UI Challenge</p>
+    </footer>
+    </div>
+    <!-- load us -->
+    <script type="text/javascript " src="../../static/photo_static/js/tether.min.js?ver=0127s "></script>
+    <!-- Tether   -->
+    <script type="text/javascript " src="../../static/photo_static/js/bootstrap.min.js?ver=0127s "></script>
+    <!-- Bootstrap js v4  -->
+    <script type="text/javascript " src="../../static/photo_static/js/jquery.magnific-popup.min.js?ver=0127s "></script>
+    <!-- Magnific popup -->
+    <script type="text/javascript" src="../../static/js/myscript.js?ver=sssass"></script>
+    <script>
+    $(window).load(function() {
+
+        /*share link and photo delete listener*/
+        $('#shareModal').on('hidden.bs.modal', function() {
+            $('#link_copy_indicator').css('opacity', '0')
+        })
+
+        $('#share_link').val(window.location.toString());
+        $("#share_link").click(function() {
+            this.select();
+            document.execCommand('copy');
+            $('#link_copy_indicator').css('opacity', '1')
+        });
+
+        /* magnificPopup pop up initiate
+        -----------------------------------------*/
+        $('.gallery').magnificPopup({
+            delegate: 'a', // child items selector, by clicking on it popup will open
+            type: 'image',
+            gallery: { enabled: true },
+            midClick: true
+        });
+
+
+        /* render picture in canva
+        -----------------------------------------*/
+        $('.grid-item').height($('.grid-item').width())
+        $('.albumImg').css({ 'height': $('.grid-item').width(), 'width': $('.grid-item').width() });
+        for (var i = 0; i < document.getElementsByTagName("canvas").length; i++) {
+            var canvas = document.getElementsByTagName("canvas")[i];
+            canvas.width = $('.grid-item').width();
+            canvas.height = $('.grid-item').height();
+            //var ctx = document.getElementsByTagName("canvas")[i].getContext('2d'),
+            var ctx = canvas.getContext('2d');
+            image = new Image();
+            (function(ctx, image) {
+                image.onload = function() {
+                    math_min = Math.min(image.height, image.width)
+                    if (image.height < image.width) {
+                        start = (image.width - math_min) / 2
+                        ctx.drawImage(image, start, 0, math_min, math_min,
+                            0, 0, canvas.width, canvas.height);
+                    } else {
+                        start = (image.height - math_min) / 2
+                        ctx.drawImage(image, 0, start, math_min, math_min,
+                            0, 0, canvas.width, canvas.height);
+                    }
+                }
+                image.src = document.getElementsByTagName("canvas")[i].parentElement.href;
+            })(ctx, image);
+        }
+
+        // Remove preloader (https://ihatetomatoes.net/create-custom-preloading-screen/)
+        $('body').addClass('loaded');
+
+        // Write current year in copyright text.
+        $(".tm-copyright-year").text(new Date().getFullYear());
+
+
+
+    });
+    </script>
+</body>
+
+</html>
