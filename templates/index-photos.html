@@ -2,64 +2,44 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Photoe page</title>
-    <!-- load css for font style -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <meta charset="UTF-8">
+    <title>Photo App</title>
     <!-- load css for Font Awesome -->
-    <link href="{{ url_for('static', filename='photo_static/Font-Awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='new/css/Font-Awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet">
     <!-- load css for Bootstrap -->
-    <link href="{{ url_for('static', filename='photo_static/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='new/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- load css for magnificpopuo -->
-    <link href="{{ url_for('static', filename='photo_static/css/magnific-popup.css') }}" rel="stylesheet">
-    <!-- load css for customized css -->
-    <link href="../../static/photo_static/css/photos_css.css?ver=0127sssf" rel="stylesheet">
+    <link href="{{ url_for('static', filename='new/css/magnific-popup.css') }}" rel="stylesheet">
+    <!-- load css for music player -->
+    <link href="{{ url_for('static', filename='new/css/music.css') }}" rel="stylesheet">
+    <!-- load css for template -->
+    <link href="../../static/new/css/style.css?ver=012sssss7s" rel="stylesheet">
     <!-- jQuery (https://jquery.com/download/) -->
-    <script type="text/javascript" src="../../static/photo_static/js/jquery-1.11.3.min.js?ver=0127s"></script>
-    <style>
-    .form-control {
-        height: 50px;
-    }
-
-    .filter_btn {
-        height: 50px;
-        /*border:1px solid black;*/
-        border-radius: 5px;
-        box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.5);
-        font-size: 25px;
-        color: white
-    }
-
-    .input-group {
-        margin-right: 40px
-    }
-    </style>
+    <script type="text/javascript" src="../../static/new/js/jquery-1.11.3.min.js?ver=0127s"></script>
 </head>
 
 <body>
-    <div>
-        <!-- Navigation -->
-        <div class="nav_div">
-            <nav class="navbar">
-                <div>
-                    <a class="navbar-brand text-uppercase" href="#"><i class="fa fa-picture-o tm-brand-icon"></i>Photos in {{album_name}}</a>
-                    <p class='login_indi'> Hi XX
-                        <br> <a style='float:right;font-size:15px;color:white' href="{{ url_for('do_logout') }}">Log Out</a></p>
-                </div>
-            </nav>
-        </div>
-        <div class="content">
-            <div class='row' style='margin-top:10px'>
-                <div class="col-md-4" style='float: left'>
+    <audio id="audioElement" src="../../static/new/data/test.mp3"></audio>
+    <div id="wrapper">
+        <header id="js-header">
+            <div class="container clearfix">
+                <h1 id="logo">Photos in {{album_name}}</h1>
+                <nav>
+                    <a href="#bacon">Hi XXX</a>
+                    <a href="{{ url_for('do_logout') }}">Sign out?</a>
+                </nav>
+            </div>
+        </header>
+        <div id="main">
+            <div class='row' style='margin:30px 0px'>
+                <div class="col-md-3 col-lg-5" style='float: left'>
                     <a class="text-uppercase" href="/" style='color:black'>
                         <i class="fa fas fa-chevron-left" style='font-size: 30px; padding:10px;'> </i>
                          Back to albums
                     </a>
                 </div>
-                <div class="col-md-7" style='float: right; margin-right:20px'>
-                    <form action="/album/{{album_name}}/{{owner_name}}/upload" method="post" enctype="multipart/form-data" style='width:90%;display:inline-block;float: left;'>
+                <div class="col-md-8 col-lg-6" style='display:flex;float: right; margin-right:10px'>
+                    <form action="/album/{{album_name}}/{{owner_name}}/upload" method="post" enctype="multipart/form-data" style='width:100%;display:inline-block;'>
                         <div class="input-group">
                             <input type="file" name="file" class="form-control" placeholder="Upload photo" accept="image/jpeg">
                             <input type="hidden" name="galleryName" value="{{album_name}}">
@@ -68,8 +48,7 @@
                              </span>
                         </div>
                     </form>
-                    <button id='share_btn' class="btn btn-default filter_btn" style='display:inline-block; margin-left: 20px' data-toggle="modal" data-target="#shareModal"><i class="fa fas fa-share-square" style='padding:10%'></i></button>
-                    <div><strong>Only Image files are allowed</strong></div>
+                    <button id='share_btn' class="btn btn-default filter_btn" style='display:inline-block; margin-left: 10px' data-toggle="modal" data-target="#shareModal"><i class="fa fas fa-share-square"></i></button>
                 </div>
             </div>
             <div class="container-fluid gallery">
@@ -77,10 +56,8 @@
                 <div class="grid-item">
                     <a class="grid-a" href="{{photo['img']}}">
                         <canvas></canvas>
-                    <a>
-                    
-                    <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo['id']}}" data-ownername="{{owner_name}}" >Delete</button>
-                    <!-- <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo['id']}}" data-ownername="{{owner_name}}" data-toggle="modal" data-target="#delModel">Delete</button> -->
+                    </a>
+                    <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo['id']}}" data-ownername="{{owner_name}}">Delete</button>
                 </div>
                 {% endfor %} {% else %}
                 <div class="col-lg-3 ">
@@ -91,114 +68,72 @@
                 {% endif %}
             </div>
         </div>
-    </div>
-    <footer class="footer">
-        <p class="tm-copyright-text">Copyright &copy; <span class="tm-copyright-year">current year</span> Your Company | Design: Bose UI Challenge</p>
-    </footer>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="shareModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Share this album</h4>
+        <footer>
+            <div class="container clearfix">
+                <div class="player">
+                    <div class='plus' onclick="document.getElementById('audioElement').volume+=0.1"></div>
+                    <div class="playarea">
+                        <div class="prevSong"></div>
+                        <div id='playing' class="pause"></div>
+                        <div class="nextSong"></div>
+                    </div>
+                    <div class='minus' onclick="document.getElementById('audioElement').volume-=0.1"></div>
                 </div>
-                <div class="modal-body">
-                    <p>You may share this album by the following link.</p>
-                    <input id="share_link" type="text" value="Select a part of this text!" style='width:100%'>
-                    <p id='link_copy_indicator' style='color:red; opacity:0'>Link copied!</p>
+                <p style='margin:20px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p>
+            </div>
+        </footer>
+        <!-- Modal -->
+        <div class="modal fade" id="shareModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Share this album</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You may share this album by the following link.</p>
+                        <input id="share_link" type="text" value="Select a part of this text!" style='width:100%'>
+                        <p id='link_copy_indicator' style='color:red; opacity:0'>Link copied!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <div class="modal fade" id="delModel" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Share this album</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You sure you gonna to delete this</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="delModel" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Share this album</h4>
-                </div>
-                <div class="modal-body">
-                    <p>You sure you gonna to delete this</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- load us -->
-    <script type="text/javascript " src="../../static/photo_static/js/tether.min.js?ver=0127s "></script>
-    <!-- Tether   -->
-    <script type="text/javascript " src="../../static/photo_static/js/bootstrap.min.js?ver=0127s "></script>
+    <!--   Tether   -->
+    <script type="text/javascript " src="../../static/new/js/tether.min.js?ver=0127s "></script>
+    <script type="text/javascript " src="../../static/new/js/bootstrap.min.js?ver=0127s "></script>
     <!-- Bootstrap js v4  -->
-    <script type="text/javascript " src="../../static/photo_static/js/jquery.magnific-popup.min.js?ver=0127s "></script>
-    <!-- Magnific popup -->
+    <script type="text/javascript " src="../../static/new/js/jquery.magnific-popup.min.js?ver=0127s "></script>
+    <!-- load d3 -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!-- Music player -->
+    <script type="text/javascript " src="../../static/new/js/music.js?ver=0127s "></script>
+    <!-- load d3 -->
+    <script type="text/javascript " src="../../static/new/js/initiate.js?ver=0127s "></script>
     <script type="text/javascript" src="../../static/js/myscript.js?ver=sssass"></script>
-    <script>
- 
-    $(window).load(function() {
 
-        /*share link and photo delete listener*/
-        $('#shareModal').on('hidden.bs.modal', function() {
-            $('#link_copy_indicator').css('opacity', '0')
-        })
-
-        $('#share_link').val(window.location.toString());
-        $("#share_link").click(function() {
-            this.select();
-            document.execCommand('copy');
-            $('#link_copy_indicator').css('opacity', '1')
-        });
-
-        /* magnificPopup pop up initiate
-        -----------------------------------------*/
-        $('.gallery').magnificPopup({
-            delegate: 'a', // child items selector, by clicking on it popup will open
-            type: 'image',
-            gallery: { enabled: true },
-            midClick: true
-        });
-        /* render picture in canva
-        -----------------------------------------*/
-        $('.grid-item').height($('.grid-item').width())
-        $('.albumImg').css({ 'height': $('.grid-item').width(), 'width': $('.grid-item').width() });
-        for (var i = 0; i < document.getElementsByTagName("canvas").length; i++) {
-            var canvas = document.getElementsByTagName("canvas")[i];
-            canvas.width = $('.grid-item').width();
-            canvas.height = $('.grid-item').height();
-            //var ctx = document.getElementsByTagName("canvas")[i].getContext('2d'),
-            var ctx = canvas.getContext('2d');
-            image = new Image();
-            (function(ctx, image) {
-                image.onload = function() {
-                    math_min = Math.min(image.height, image.width)
-                    if (image.height < image.width) {
-                        start = (image.width - math_min) / 2
-                        ctx.drawImage(image, start, 0, math_min, math_min,
-                            0, 0, canvas.width, canvas.height);
-                    } else {
-                        start = (image.height - math_min) / 2
-                        ctx.drawImage(image, 0, start, math_min, math_min,
-                            0, 0, canvas.width, canvas.height);
-                    }
-                }
-                image.src = document.getElementsByTagName("canvas")[i].parentElement.href;
-            })(ctx, image);
-        }
-
-        // Remove preloader (https://ihatetomatoes.net/create-custom-preloading-screen/)
-        $('body').addClass('loaded');
-        // Write current year in copyright text.
-        $(".tm-copyright-year").text(new Date().getFullYear());
-    });
-    </script>
+    <script type="text/javascript " src="../../static/new/js/photo.js?ver=0127s "></script>
 </body>
 
-<!-- </html> -->
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Photo App</title>
+    <!-- load css for Font Awesome -->
+    <link rel="stylesheet" href="new/css/Font-Awesome-4.7/css/font-awesome.min.css">
+    <!-- load css for Bootstrap -->
+    <link rel="stylesheet" href="new/css/bootstrap.min.css">
+    <!-- load css for magnificpopuo -->
+    <link rel="stylesheet" href="new/css/magnific-popup.css">
+    <!-- load css for music player -->
+    <link rel="stylesheet" href="new/css/music.css">
+    <!-- load css for template -->
+    <link rel="stylesheet" type="text/css" href="new/css/style.css">
+    <!-- jQuery (https://jquery.com/download/) -->
+    <script src="new/js/jquery-1.11.3.min.js"></script>
+
+</head>
+
+<body>
+    <audio id="audioElement" src="new/data/test.mp3"></audio>
+    <div id="wrapper">
+        <header id="js-header">
+            <div class="container clearfix">
+                <h1 id="logo">Photos in Albums</h1> 
+                <nav>
+                 <a href="#bacon">Hi XXX</a>
+                    <a href="#bacon">Sign out?</a>
+                </nav>
+            </div>
+        </header>
+        <div id="main">
+         <div class='row' style='margin:30px 0px'>
+                <div class="col-md-3 col-lg-5" style='float: left'>
+                    <a class="text-uppercase" href="/" style='color:black'>
+                        <i class="fa fas fa-chevron-left" style='font-size: 30px; padding:10px;'> </i>
+                         Back to albums
+                    </a>
+                </div>
+                <div class="col-md-8 col-lg-6" style='display:flex;float: right; margin-right:10px'>
+                    <form action="/album/{{album_name}}/{{owner_name}}/upload" method="post" enctype="multipart/form-data" style='width:100%;display:inline-block;'>
+                        <div class="input-group">
+                            <input type="file" name="file" class="form-control" placeholder="Upload photo" accept="image/jpeg">
+                            <input type="hidden" name="galleryName" value="{{album_name}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default filter_btn" type="submit"><i class="fa fal fa-cloud-upload"></i></button>
+                             </span>
+                        </div>
+                    </form>
+                    <button id='share_btn' class="btn btn-default filter_btn" style='display:inline-block; margin-left: 10px' data-toggle="modal" data-target="#shareModal"><i class="fa fas fa-share-square"></i></button>
+                </div>
+            </div>
+            <div class="container-fluid gallery">
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-01.jpg">
+                        <canvas></canvas>
+                    </a>
+                    <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}" data-toggle="modal" data-target="#delModel">Delete</button>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="grid-a" href="img/tm-img-02.jpg">
+                        <canvas></canvas>
+                        <button class="btn photo_del_btn" data-albumname="{{ album_name }}" data-photoname="{{photo}}" data-ownername="{{owner_name}}">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container clearfix">
+                <div class="player">
+                    <div class='plus' onclick="document.getElementById('audioElement').volume+=0.1"></div>
+                    <div class="playarea">
+                        <div class="prevSong"></div>
+                        <div id='playing' class="pause"></div>
+                        <div class="nextSong"></div>
+                    </div>
+                    <div class='minus' onclick="document.getElementById('audioElement').volume-=0.1"></div>
+                </div>
+                <p style='margin:20px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p>
+            </div>
+        </footer>
+    </div>
+    <!--   Tether   -->
+    <script src="new/js/tether.min.js" charset="utf-8"></script>
+    <script src="new/js/bootstrap.min.js" charset="utf-8"></script>
+    <!-- Bootstrap js v4  -->
+    <script src="new/js/jquery.magnific-popup.min.js" charset="utf-8"></script>
+    <!-- load d3 -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!-- Music player -->
+    <script src="new/js/music.js" charset="utf-8"></script>
+    <!-- load d3 -->
+    <script src="new/js/customized.js" charset="utf-8"></script>
+</body>
+
+</html>

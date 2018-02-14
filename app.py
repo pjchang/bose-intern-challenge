@@ -6,8 +6,7 @@ from flask import redirect, url_for
 from werkzeug.utils import secure_filename
 import json
 import os
-#from modules import Login, Albums, Photos
-from definition import *
+# from definition import *
 from pymongo import MongoClient
 import time
 import base64
@@ -20,20 +19,12 @@ class Login:
     def __init__(self):
         self.client = MongoClient(host='localhost', port=27017)
         self.db = self.client['Bose']
-        #self.connection = MongoClient('ds231568.mlab.com', 31568)
-        #self.db = self.connection['bose']
-        #self.db.authenticate('admin', 'pass')
 
-    # login existing user
     def sign_in(self,username,password):
         user=self.db.users.find_one({'user':username,'pass':password})
         return True if user else False
 
-    def logout(self):
-        pass
-
     def register(self, username,password, email):
-
         # check if the username has been claimed
         user_pre = self.db.users.find_one({'user':username})
         if user_pre:
@@ -50,41 +41,20 @@ class Albums:
         self.db = self.client['Bose']
 
     def get_albums(self,username):
-        # if not os.path.isdir(Gallery_Folder+username+"/"):
-        #     os.mkdir(Gallery_Folder+username+"/")
-        # galleries = [name for name in os.listdir(Gallery_Folder+username+"/")]
-        # return galleries
-
-        # change to mongo
         album=self.db.albums.find({'user':username}, {'album':1,'_id': 0})
         albums_list=[ k['album'] for k in album ]
         return albums_list
 
     def add_album(self,album_name,username):
-        # if os.path.isdir(Gallery_Folder+username+"/"+album_name) is False:
-        #     if os.mkdir(Gallery_Folder+username+"/"+album_name):
-        #         return True
-        # else:
-        #     return False
 
-        # change to mongo
         album_exit = self.db.albums.find_one({'user':username,'album':album_name})
-
         if album_exit:
             return {'status':False,'error':'This album already exists.'}
-
         self.db.albums.insert({'user':username,'album':album_name,'create_time':time.time(),'photos':[]})
         return {'status':True,'error':''}
 
 
     def delete_album(self, album_name,username):
-        # if os.path.isdir(Gallery_Folder+username+"/"+album_name) is True:
-        #     if os.removedirs(Gallery_Folder+username+"/"+album_name):
-        #         return True
-        #     else:
-        #         return False
-        # else:
-        #     return False
 
         album_exit = self.db.albums.find_one({'user':username,'album':album_name})
         if album_exit:
@@ -94,7 +64,7 @@ class Albums:
             return {'status':False,'error':'Cant delete this albums'}
 
 
-    def edit_gallery_name(self,oldName,newName,username):
+    def edit_album_name(self,oldName,newName,username):
 
         # album_exit = self.db.albums.find_one({'user':username,'album':oldName})
         # if album_exit:
@@ -116,46 +86,27 @@ class Photos:
 
         album=self.db.albums.find_one({'user':username,'album':album_name}, {'photos':1,'_id': 0})
         photos_list=[]
-
         if album:
             for photo in album['photos']:
                 photos_list.append(self.db.photos.find_one({'_id': photo}, {'img':1,'_id': 1}))
         return photos_list
 
-
-
-        #collection.find({'_id': ObjectId(modem["dis_imei"])})
-
-    def add_photos(self, file, filename, album, username):
-
+    def add_photo(self, file, filename, album, username):
         _id=self.db.photos.insert({"img":file,'filename':filename,'album':album,'user':username,'create_time':time.time()})
         self.db.albums.update({'user':username,'album':album}, {'$push': {'photos': _id}})
 
 
-
-    def delete_photos(self, album_name, photo_name,username):
-
-        # if os.path.exists(Gallery_Folder+username+"/" + album_name+"/"+photo_name) is True:
-        #     if os.remove(Gallery_Folder+username+"/"+album_name+"/"+photo_name):
-        #         return True
-        #     else:
-        #         return False
-        # else:
-        #     return False
-
+    def delete_photo(self, album_name, photo_name,username):
         self.db.photos.delete_one({'_id': ObjectId(photo_name)})
         self.db.albums.update_one({ "user": username, "album": album_name},{ "$pull": { "photos": ObjectId(photo_name) } })
         print self.db.albums.find_one({ "user": username, "album": album_name})
         return True
 
-
-# -------------- initiate ----------------
+# -------------- initiate app ----------------
 
 app = Flask(__name__)
 app.config.update(dict(SECRET_KEY='mylongsecretkeys'))
-
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg','png',])
-
 
 # -------------- Sign-in Sign-our ----------------
 
@@ -275,7 +226,7 @@ def delete_gallery_photo():
         #if owner is current user
         if owner_name == session['user_curr']:
             photos_obj = Photos()
-            result = photos_obj.delete_photos(album_name, photo_name,owner_name)
+            result = photos_obj.delete_photo(album_name, photo_name,owner_name)
         else:
             result=False
         response = {'success': result}
@@ -306,7 +257,7 @@ def upload_gallery_photo(album_name,owner_name):
                 filename = secure_filename(file.filename)
                 encoded_file = base64.b64encode(file.read())
                 photos_obj = Photos()
-                photos = photos_obj.add_photos(encoded_file,filename, album_name, owner_name)
+                photos = photos_obj.add_photo(encoded_file,filename, album_name, owner_name)
 
 
     return redirect(url_for('gallery', album_name=album_name,owner_name=owner_name))
