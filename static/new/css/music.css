@@ -1,9 +1,7 @@
   .player {
-      width: 200px;
       height: 200px;
       display: block;
       position: relative;
-      background-color: #000428;
   }
 
   .player .playarea {

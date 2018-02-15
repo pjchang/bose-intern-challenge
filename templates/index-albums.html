@@ -11,7 +11,7 @@
     <!-- load css for magnificpopuo -->
     <link href="{{ url_for('static', filename='new/css/magnific-popup.css') }}" rel="stylesheet">
     <!-- load css for music player -->
-    <link href="{{ url_for('static', filename='new/css/music.css') }}" rel="stylesheet">
+    <link href="../../static/new/css/music.css?ver=012ssssssssss7s" rel="stylesheet">
     <!-- load css for template -->
     <link href="../../static/new/css/style.css?ver=012sssss7s" rel="stylesheet">
     <!-- jQuery (https://jquery.com/download/) -->
@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <audio id="audioElement" src="../../static/new/data/test.mp3"></audio>
+    <audio id="audioElement" src="../../static/new/data/Opening.mp3"></audio>
     <div id="wrapper">
         <header id="js-header">
             <div class="container clearfix">
@@ -60,17 +60,28 @@
             </div>
         </div>
         <footer>
+        <div id="audio_list" style='display:none'>
+            <a href="#" class="track" data-location="../../static/new/data/Opening.mp3">sample</a>
+            <a href="#" class="track" data-location="../../static/new/data/Riding Horses.mp3">sample</a>
+            <a href="#" class="track" data-location="../../static/new/data/snow.mp3">sample</a>
+            <a href="#" class="track" data-location="../../static/new/data/the wings.mp3">sample</a>
+            <a href="#" class="track" data-location="../../static/new/data/Bright_Wish.mp3">sample</a>
+            <a href="#" class="track" data-location="../../static/new/data/Brokeback Mountain 2.mp3">sample</a>
+        </div>
             <div class="container clearfix">
-                <div class="player">
-                    <div class='plus' onclick="document.getElementById('audioElement').volume+=0.1"></div>
-                    <div class="playarea">
-                        <div class="prevSong"></div>
-                        <div id='playing' class="pause"></div>
-                        <div class="nextSong"></div>
+                <div class='col-xs-3 col-md-3 col-lg-2' style='height:200px;'>
+                    <div class="player">
+                        <div class='plus' onclick="document.getElementById('audioElement').volume+=0.1"></div>
+                        <div class="playarea">
+                            <div class="prevSong"></div>
+                            <div id='playing' class="pause"></div>
+                            <div class="nextSong"></div>
+                        </div>
+                        <div class='minus' onclick="document.getElementById('audioElement').volume-=0.1"></div>
                     </div>
-                    <div class='minus' onclick="document.getElementById('audioElement').volume-=0.1"></div>
                 </div>
-                <p style='margin:20px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p>
+                <div id="animation" class='col-xs-9 col-md-9 col-lg-9' style='height:200px; padding:40px 0px'></div>
+                <p style='margin:0px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p>
             </div>
         </footer>
         <!-- Modal -->
@@ -117,17 +128,14 @@
     <!-- Bootstrap js v4  -->
     <script type="text/javascript " src="../../static/new/js/jquery.magnific-popup.min.js?ver=0127s "></script>
     <!-- load d3 -->
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <!-- Music player -->
-    <script type="text/javascript " src="../../static/new/js/music.js?ver=0127s "></script>
+    <script type="text/javascript " src="../../static/new/js/d3.v3.min.js?ver=0127ss "></script>
+    <!-- Music animation -->
+    <script type="text/javascript " src="../../static/new/js/music.js?ver=0127ss "></script>
     <!-- load d3 -->
-    <script type="text/javascript " src="../../static/new/js/initiate.js?ver=0127s "></script>
+    <script type="text/javascript " src="../../static/new/js/initiate.js?ver=0s12s7s "></script>
     <script type="text/javascript" src="../../static/js/myscript.js?ver=sssass"></script>
-
     <!-- load album js -->
     <script type="text/javascript " src="../../static/new/js/album.js?ver=0127s "></script>
-
-    
 </body>
 
 </html>

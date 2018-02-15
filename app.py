@@ -17,8 +17,11 @@ class Login:
 
     # Constructor
     def __init__(self):
-        self.client = MongoClient(host='localhost', port=27017)
-        self.db = self.client['Bose']
+        # self.client = MongoClient(host='localhost', port=27017)
+        # self.db = self.client['Bose']
+        self.connection = MongoClient('ds231568.mlab.com', 31568)
+        self.db = self.connection['bose']
+        self.db.authenticate('admin', 'pass')
 
     def sign_in(self,username,password):
         user=self.db.users.find_one({'user':username,'pass':password})
@@ -37,8 +40,11 @@ class Login:
 class Albums:
 
     def __init__(self):
-        self.client = MongoClient(host='localhost', port=27017)
-        self.db = self.client['Bose']
+        # self.client = MongoClient(host='localhost', port=27017)
+        # self.db = self.client['Bose']
+        self.connection = MongoClient('ds231568.mlab.com', 31568)
+        self.db = self.connection['bose']
+        self.db.authenticate('admin', 'pass')
 
     def get_albums(self,username):
         album=self.db.albums.find({'user':username}, {'album':1,'_id': 0})
@@ -79,8 +85,11 @@ class Albums:
 class Photos:
 
     def __init__(self):
-        self.client = MongoClient(host='localhost', port=27017)
-        self.db = self.client['Bose']
+        # self.client = MongoClient(host='localhost', port=27017)
+        # self.db = self.client['Bose']
+        self.connection = MongoClient('ds231568.mlab.com', 31568)
+        self.db = self.connection['bose']
+        self.db.authenticate('admin', 'pass')
 
     def get_photos(self, album_name,username):
 
