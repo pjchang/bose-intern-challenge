@@ -2,11 +2,10 @@ from flask import Flask
 from flask import session
 from flask import request
 from flask import render_template
-from flask import redirect, url_for
+from flask import redirect, url_for, abort, jsonify
 from werkzeug.utils import secure_filename
 import json
 import os
-# from definition import *
 from pymongo import MongoClient
 import time
 import base64
@@ -19,7 +18,7 @@ class Login:
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
-        self.connection = MongoClient('ds231568.mlab.com', 31568)
+        self.connection = MongoClient('ds023455.mlab.com', 23455)
         self.db = self.connection['bose']
         self.db.authenticate('admin', 'pass')
 
@@ -31,7 +30,7 @@ class Login:
         # check if the username has been claimed
         user_pre = self.db.users.find_one({'user':username})
         if user_pre:
-            return {'status':False,'error':'username has been claimed'}
+            return {'status':False,'error':error_list[9]}
         self.db.users.insert({'user':username,'pass':password,'email':email})
         return {'status':True,'error':''}
 
@@ -42,7 +41,7 @@ class Albums:
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
-        self.connection = MongoClient('ds231568.mlab.com', 31568)
+        self.connection = MongoClient('ds023455.mlab.com', 23455)
         self.db = self.connection['bose']
         self.db.authenticate('admin', 'pass')
 
@@ -55,7 +54,7 @@ class Albums:
 
         album_exit = self.db.albums.find_one({'user':username,'album':album_name})
         if album_exit:
-            return {'status':False,'error':'This album already exists.'}
+            return {'status':False,'error':error_list[5]}
         self.db.albums.insert({'user':username,'album':album_name,'create_time':time.time(),'photos':[]})
         return {'status':True,'error':''}
 
@@ -67,18 +66,10 @@ class Albums:
             self.db.albums.delete_one({'user':username,'album':album_name})
             return {'status':True,'error':''}
         else:
-            return {'status':False,'error':'Cant delete this albums'}
+            return {'status':False,'error':error_list[8]}
 
 
     def edit_album_name(self,oldName,newName,username):
-
-        # album_exit = self.db.albums.find_one({'user':username,'album':oldName})
-        # if album_exit:
-        #     self.db.albums.update_one({'user':username,'album':oldName}, '$set': {'album': newName})
-              #db.albums.updateOne({"user":"test","album":"album 1"}, {$set: {'album': "new"}})
-        #     return {'status':True,'error':''}
-        # else:
-        #     return {'status':False,'error':'Cant delete this albums'}
         pass
 
 
@@ -87,7 +78,7 @@ class Photos:
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
-        self.connection = MongoClient('ds231568.mlab.com', 31568)
+        self.connection = MongoClient('ds023455.mlab.com', 23455)
         self.db = self.connection['bose']
         self.db.authenticate('admin', 'pass')
 
@@ -115,7 +106,12 @@ class Photos:
 
 app = Flask(__name__)
 app.config.update(dict(SECRET_KEY='mylongsecretkeys'))
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg','png',])
+ALLOWED_EXTENSIONS = set(['jpg', 'jpeg','png','gif' ])
+#app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024 
+# something wrong with this code
+error_list=['','No selected file', 'Upload cant complete', 'Only album owner could add photos', 'Only jpg, jpeg, png and gif files are allowed',
+'The album already exists.', 'Album name is too long','User hasnt login yet.','Cant delete this albums','username has been claimed'
+,'Username or password is incorrect.']
 
 # -------------- Sign-in Sign-our ----------------
 
@@ -128,7 +124,7 @@ def index():
         if 'user_login' in session:
             if session['user_login'] == True:
                 return redirect(url_for('albums'))
-        return render_template("index-login.html", error_msg=error_msg)
+        return render_template("index-login.html", error_msg=error_msg,session=session)
 
     # visited by form
     if request.method == "POST":
@@ -139,15 +135,18 @@ def index():
             session['user_curr'] = request.form['username']
             return redirect(url_for('albums'))
         else:
-            error_msg='username or password is incorrect.'
-            return render_template("index-login.html", error_msg=error_msg)
+            error_msg=error_list[10]
+            return render_template("index-login.html", error_msg=error_msg,session=session)
         
 
 @app.route('/register', methods=['GET','POST'])
 def register():
     # visited by url
     if request.method == "GET":
-        return render_template("index-register.html",  error_msg='' )
+        if 'user_login' in session:
+            if session['user_login'] == True:
+                return redirect(url_for('index'))
+        return render_template("index-register.html", error_msg='',session=session)
     # visited by form
     if request.method == "POST":
         login_inst=Login()
@@ -160,7 +159,7 @@ def register():
         else:
              session.pop('user_login', None)
              session.pop('user_curr', None)
-             return render_template("index-register.html",error_msg=register['error'])
+             return render_template("index-register.html",error_msg=register['error'],session=session)
 
 @app.route('/logout')
 def do_logout():
@@ -185,14 +184,15 @@ def add_album():
     if 'user_login' in session:
         if request.method == "POST":
             album_name = request.form['album_name']
-
-            album_obj = Albums()
-            result = album_obj.add_album(album_name,session['user_curr'])
-
-            response = {'success': result['status'], 'error':result['error']}
+            if len(album_name)>20:
+                response = {'success': False, 'error':error_list[6]}
+            else:
+                album_obj = Albums()
+                result = album_obj.add_album(album_name,session['user_curr'])
+                response = {'success': result['status'], 'error':result['error']}
             return json.dumps(response)
     else:
-        response = {'success': False}
+        response = {'success': False,'error':error_list[7]}
         return json.dumps(response)
 
 
@@ -210,6 +210,11 @@ def delete_album():
 @app.route('/album/<album_name>/<owner_name>', methods=['GET'])
 def gallery(album_name,owner_name):
     if 'user_login' in session:
+        error_code = request.args.get('error') if request.args.get('error') else 0
+        try:
+            error_code=int(error_code)
+        except:
+            error_code=0
         photos_obj = Photos()
         photos = photos_obj.get_photos(album_name,owner_name)
         photo_list=[]
@@ -218,7 +223,7 @@ def gallery(album_name,owner_name):
             decode=photo["img"].decode()
             img_tag = "data:image/png;base64,{0}".format(decode)
             photo_list.append({'img':img_tag,'id':photo["_id"]})
-        return render_template("index-photos.html", photos=photo_list, album_name=album_name, session=session,owner_name=owner_name)
+        return render_template("index-photos.html", photos=photo_list, album_name=album_name, session=session,owner_name=owner_name,error=error_list[error_code])
     else:
         return redirect(url_for("index"))
 
@@ -226,7 +231,6 @@ def gallery(album_name,owner_name):
 @app.route('/album/photos/delete', methods=['POST'])
 def delete_gallery_photo():
 
-    print 'indelete'
     if request.method == "POST":
         album_name = request.form['albumName']
         photo_name = request.form['photoName']
@@ -246,32 +250,34 @@ def delete_gallery_photo():
 def upload_gallery_photo(album_name,owner_name):
 
     if request.method == 'POST':
+        error_num=0
+        try:
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                error_num=1
+                return redirect(url_for('gallery', album_name=album_name,owner_name=owner_name,error=error_num))
+            
+            file = request.files['file']
+            if file.filename == '':
+                error_num=1
+                msg = error_code[error_num]
+                return redirect(request.url)
 
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            return redirect(url_for('gallery', album_name=album_name,owner_name=owner_name))
-
-        file = request.files['file']
-
-
-        # if user does not select file, browser also submit a empty part without filename
-        if file.filename == '':
-            msg = 'No selected file'
-            return redirect(request.url)
-
-        # if the current user is the owner
-        if session['user_curr'] == owner_name:
-            # check the data formate
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                encoded_file = base64.b64encode(file.read())
-                photos_obj = Photos()
-                photos = photos_obj.add_photo(encoded_file,filename, album_name, owner_name)
-
-
-    return redirect(url_for('gallery', album_name=album_name,owner_name=owner_name))
-
-
+            # if the current user is the owner
+            if session['user_curr'] == owner_name:
+                # check the data formate
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    encoded_file = base64.b64encode(file.read())
+                    photos_obj = Photos()
+                    photos = photos_obj.add_photo(encoded_file,filename, album_name, owner_name)
+                else:
+                    error_num=4
+            else:
+                error_num=3
+        except:
+            error_num=2
+    return redirect(url_for('gallery', album_name=album_name,owner_name=owner_name,error=error_num))
 
 
 @app.route('/test', methods=['GET'])

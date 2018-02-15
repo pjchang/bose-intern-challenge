@@ -13,7 +13,6 @@ $(window).load(function() {
 
     /* render picture in canva
     -----------------------------------------*/
-    $('.grid-item').height($('.grid-item').width())
     for (var i = 0; i < document.getElementsByTagName("canvas").length; i++) {
         var canvas = document.getElementsByTagName("canvas")[i];
         canvas.width = $('.grid-item').width();

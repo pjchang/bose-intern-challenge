@@ -1,9 +1,9 @@
-{% extends 'index-base.html' %}
+{% extends 'index-base2.html' %}
 {% block content %}
 
         <div id="main">
             <div class="content">
-                <form id="signup" name="signup" method="post">
+                <form id="signup" name="signup" method="post" autocomplete="false">
                     <h3 style='text-align: center'>Sign up!</h3>
                     <div class="underline"></div>
                     <div style='color:red'> {{error_msg}} </div>
@@ -17,7 +17,8 @@
                         <input type="submit" name="submit_reg" class="login login-submit btn" value="Submit">
                     </div>
                     <div class="login-help">
-                        Already have a account? <a href="/login">Sign in</a>
+                        Already have a account? 
+                        <br><a href="/login">Sign in</a>
                     </div>
                 </form>
             </div>

@@ -16,7 +16,7 @@ window.addEventListener('scroll', resizeHeaderOnScroll);
 $('#shareModal').on('hidden.bs.modal', function() {
     $('#link_copy_indicator').css('opacity', '0')
 })
-$('#share_link').val(window.location.toString());
+$('#share_link').val(window.location.toString().split("?")[0]);
 $("#share_link").click(function() {
     this.select();
     document.execCommand('copy');
@@ -41,7 +41,7 @@ $('#playing').on('click', function() {
     }
 
 })
-
+$('.grid-item').height($('.grid-item').width())
 
  var track = [];
  var current_track = 0;
@@ -84,3 +84,5 @@ $('#playing').on('click', function() {
 
  }
  change_track(track[0])
+
+ 

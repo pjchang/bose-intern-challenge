@@ -1,34 +1,38 @@
-{% extends 'index-base.html' %}
-{% block content %}
-        <div id="main">
-            <div class='row' style='margin-top:10px'>
-                <div class="col-md-5" style='float: right; margin-right:20px'>
-                    <div class="input-group">
-                        <input type="text" id="album_name" class="form-control" placeholder="Add Album">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default filter_btn album_add_btn" type="button">Add</button>
+{% extends 'index-base.html' %} {% block content %}
+<div id="main">
+
+    <div class='row' style='margin:30px 0px'>
+        <div class="col-md-8 col-lg-6" style='float: right; margin-right:80px'>
+            <div class="input-group">
+                <input type="text" id="album_name" class="form-control" placeholder="Add Album">
+                <span class="input-group-btn">
+                            <button class="btn btn-default filter_btn album_add_btn" type="button"><i class="fa far fa-plus"></i></button>
                         </span>
-                    </div>
-                </div>
             </div>
-            <div class="container-fluid gallery">
-                {% if albums is defined %} {% for album in albums %}
-                <div class="grid-item">
-                    <a class="grid-a" href="{{ url_for('gallery', album_name=album, owner_name=session['user_curr']) }}">
-                        <img class="albumImg" src='https://cdn2.iconfinder.com/data/icons/perfect-flat-icons-2/512/Closed_folder_open_add_upload.png' onmouseover="this.src='https://cdn2.iconfinder.com/data/icons/perfect-flat-icons-2/512/Open_folder_blue_upload_yellow.png';" onmouseout="this.src='https://cdn2.iconfinder.com/data/icons/perfect-flat-icons-2/512/Closed_folder_open_add_upload.png';" alt="album {{ album }}" title="Album {{ album }}" />
-                        <div class="centered">{{ album }}</div>
-                    </a>
-                    <button class="btn  album_del_btn" data-albumname="{{ album }}">Delete</button>
-                </div>
-                {% endfor %} {% else %}
-                <div class="col-lg-3 ">
-                    <div class="col-lg-3 ">
-                        <p class="alert alert-info ">No Album Found</p>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
+            <p id='album_error' style='color:red; font-weight: bold'></p>
         </div>
-        <!-- load album js -->
-        <script type="text/javascript " src="../../static/new/js/album.js?ver=0127s "></script>
-  {% endblock %}
+    </div>
+    <div class="container-fluid gallery">
+        {% if albums is defined %} {% for album in albums %}
+        <div class="grid-item" >
+            <a class="grid-a" href="{{ url_for('gallery', album_name=album, owner_name=session['user_curr']) }}">
+                <div class='grid-a-div'>
+                    <div class="centered">{{ album }}</div>
+                </div>
+            </a>
+            <button class="btn  album_del_btn" data-albumname="{{ album }}">Delete</button>
+        </div>
+        {% endfor %} {% else %}
+            <div >
+                <p class="alert nodata ">No Album Found</p>
+            </div>
+        {% endif %}
+         {% if albums|length< 1 %} 
+            <div >
+                <p class="alert nodata ">No Album Found</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

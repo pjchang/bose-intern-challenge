@@ -11,9 +11,9 @@
     <!-- load css for magnificpopuo -->
     <link href="{{ url_for('static', filename='new/css/magnific-popup.css') }}" rel="stylesheet">
     <!-- load css for music player -->
-    <link href="../../static/new/css/music.css?ver=012ssssssssss7s" rel="stylesheet">
+    <link href="../../static/new/css/music.css?ver=012ssssssssssss7s" rel="stylesheet">
     <!-- load css for template -->
-    <link href="../../static/new/css/style.css?ver=012ssssssssss7s" rel="stylesheet">
+    <link href="../../static/new/css/style.css?ver=02sssssdssssssssssdssss" rel="stylesheet">
     <!-- jQuery (https://jquery.com/download/) -->
     <script type="text/javascript" src="../../static/new/js/jquery-1.11.3.min.js?ver=0127s"></script>
 </head>
@@ -22,18 +22,33 @@
     <audio id="audioElement" src="../../static/new/data/Opening.mp3"></audio>
     <div id="wrapper">
         <header id="js-header">
-            <div class="container clearfix">
+            <div class="container clearfix text-uppercase">
+            {% if photos is defined %}
+                <h1 id="logo">photos in {{album_name}}</h1>
+            {% else %}
                 <h1 id="logo">Albums</h1>
-                <nav>
-                    <a href="#">Hi XXX</a>
-                    <a href="{{ url_for('do_logout') }}">Sign out?</a>
-                </nav>
+            {% endif %}
+
+                {% if "user_curr" in session %}
+                    <nav>
+                        <p class='login-status'>Hi {{session['user_curr']}}</p>
+                         <a class='login-status-a' href="{{ url_for('do_logout') }}">Sign out?</a>
+                    </nav>
+                {% else %}
+                    <nav>
+                         <p class='login-status text-uppercase'>Hi Guest</p>
+                         <a class='login-status-a' href="\">Sign in?</a>
+                    </nav>
+                {% endif %}
             </div>
         </header>
 
             {% block content %}{% endblock %}
+    <div id="loader-container">
+        <p id="loadingText">Loading</p>
+    </div>
 
-        <footer>
+        <footer class='footer2'>
             <div id="audio_list" style='display:none'>
                 <a href="#" class="track" data-location="../../static/new/data/Opening.mp3">sample</a>
                 <a href="#" class="track" data-location="../../static/new/data/Riding Horses.mp3">sample</a>
@@ -55,10 +70,10 @@
                     </div>
                 </div>
                 <div id="animation" class='col-xs-9 col-md-9 col-lg-9' style='height:200px; padding:40px 0px'>
-                    <p id='song_name' style='margin:0px;color:white;position:absolute;right:50%;bottom:0px;'>hahaha</p>
+                    <p id='song_name'></p>
                 </div>
                 <!-- <p style='margin:0px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p> -->
-                <p style='margin-right:30px;color:white;position:absolute;right:0;top:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p>
+                <p style='margin-right:30px;color:white;position:absolute;right:0;top:0px;'>Bose UI Challenge &copy; <span class="tm-copyright-year">current year</span></p>
 
             </div>
         </footer>
@@ -110,8 +125,8 @@
     <!-- Music animation -->
     <script type="text/javascript " src="../../static/new/js/music.js?ver=0127ss "></script>
     <!-- load d3 -->
-    <script type="text/javascript " src="../../static/new/js/initiate.js?ver2s7s "></script>
-    <script type="text/javascript" src="../../static/js/myscript.js?ver=sssass"></script>
+    <script type="text/javascript " src="../../static/new/js/initiate.js?vers2ss7s "></script>
+    <script type="text/javascript " src="../../static/new/js/ajax.js?ver=0127ss "></script>
 </body>
 
 </html>
