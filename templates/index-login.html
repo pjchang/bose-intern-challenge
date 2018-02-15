@@ -1,36 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Photo App</title>
-    <!-- load css for Font Awesome -->
-    <link href="{{ url_for('static', filename='new/css/Font-Awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet">
-    <!-- load css for Bootstrap -->
-    <link href="{{ url_for('static', filename='new/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- load css for magnificpopuo -->
-    <link href="{{ url_for('static', filename='new/css/magnific-popup.css') }}" rel="stylesheet">
-    <!-- load css for music player -->
-    <link href="../../static/new/css/music.css?ver=012ssssssssss7s" rel="stylesheet">
-    <!-- load css for template -->
-    <link href="../../static/new/css/style.css?ver=012ssssssssss7s" rel="stylesheet">
-    <!-- jQuery (https://jquery.com/download/) -->
-    <script type="text/javascript" src="../../static/new/js/jquery-1.11.3.min.js?ver=0127s"></script>
-
-</head>
-
-<body>
-    <audio id="audioElement" src="../../static/new/data/Opening.mp3"></audio>
-    <div id="wrapper">
-        <header id="js-header">
-            <div class="container clearfix">
-                <h1 id="logo">Albums</h1>
-                <nav>
-                    <a href="#">Hi XXX</a>
-                    <a href="{{ url_for('do_logout') }}">Sign out?</a>
-                </nav>
-            </div>
-        </header>
+{% extends 'index-base.html' %}
+{% block content %}
         <div id="main">
             <div class="content">
             <form id="signup" method="post">
@@ -48,87 +17,6 @@
                     Don't have an account yet?  <a href="/register">Register</a> 
                 </div>
             </form>
-        </div>
-        </div>
-        <footer>
-        <div id="audio_list" style='display:none'>
-            <a href="#" class="track" data-location="../../static/new/data/Opening.mp3">sample</a>
-            <a href="#" class="track" data-location="../../static/new/data/Riding Horses.mp3">sample</a>
-            <a href="#" class="track" data-location="../../static/new/data/snow.mp3">sample</a>
-            <a href="#" class="track" data-location="../../static/new/data/the wings.mp3">sample</a>
-            <a href="#" class="track" data-location="../../static/new/data/Bright_Wish.mp3">sample</a>
-            <a href="#" class="track" data-location="../../static/new/data/Brokeback Mountain 2.mp3">sample</a>
-        </div>
-            <div class="container clearfix">
-                <div class='col-xs-3 col-md-3 col-lg-2' style='height:200px;'>
-                    <div class="player">
-                        <div class='plus' onclick="document.getElementById('audioElement').volume+=0.1"></div>
-                        <div class="playarea">
-                            <div class="prevSong"></div>
-                            <div id='playing' class="pause"></div>
-                            <div class="nextSong"></div>
-                        </div>
-                        <div class='minus' onclick="document.getElementById('audioElement').volume-=0.1"></div>
-                    </div>
-                </div>
-                <div id="animation" class='col-xs-9 col-md-9 col-lg-9' style='height:200px; padding:40px 0px'></div>
-                <p style='margin:0px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p>
-            </div>
-        </footer>
-        <!-- Modal -->
-        <div class="modal fade" id="shareModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Share this album</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>You may share this album by the following link.</p>
-                        <input id="share_link" type="text" value="Select a part of this text!" style='width:100%'>
-                        <p id='link_copy_indicator' style='color:red; opacity:0'>Link copied!</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
             </div>
         </div>
-        <div class="modal fade" id="delModel" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Share this album</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>You sure you gonna to delete this</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--   Tether   -->
-    <script type="text/javascript " src="../../static/new/js/tether.min.js?ver=0127s "></script>
-    <script type="text/javascript " src="../../static/new/js/bootstrap.min.js?ver=0127s "></script>
-    <!-- Bootstrap js v4  -->
-    <script type="text/javascript " src="../../static/new/js/jquery.magnific-popup.min.js?ver=0127s "></script>
-    <!-- load d3 -->
-    <script type="text/javascript " src="../../static/new/js/d3.v3.min.js?ver=0127ss "></script>
-    <!-- Music animation -->
-    <script type="text/javascript " src="../../static/new/js/music.js?ver=0127ss "></script>
-    <!-- load d3 -->
-    <script type="text/javascript " src="../../static/new/js/initiate.js?ver=0s12s7s "></script>
-    <script type="text/javascript" src="../../static/js/myscript.js?ver=sssass"></script>
-    <!-- load album js -->
-    <script type="text/javascript " src="../../static/new/js/album.js?ver=0127s "></script>
-
-    
-</body>
-
-</html>
+ {% endblock %}
