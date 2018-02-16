@@ -11,15 +11,16 @@
     <!-- load css for magnificpopuo -->
     <link href="{{ url_for('static', filename='new/css/magnific-popup.css') }}" rel="stylesheet">
     <!-- load css for music player -->
-    <link href="../../static/new/css/music.css?ver=012ssssssssss7s" rel="stylesheet">
+    <link href="../../static/new/css/music.css?ver=0215" rel="stylesheet">
     <!-- load css for template -->
-    <link href="../../static/new/css/style.css?ver=sdsssdssds" rel="stylesheet">
+    <link href="../../static/new/css/style.css?ver=0215" rel="stylesheet">
     <!-- jQuery (https://jquery.com/download/) -->
-    <script type="text/javascript" src="../../static/new/js/jquery-1.11.3.min.js?ver=0127s"></script>
+    <script type="text/javascript" src="../../static/new/js/jquery-1.11.3.min.js?ver=0215"></script>
 </head>
 
 <body>
     <div id="wrapper">
+        <!-- header -->
         <header id="js-header">
             <div class="container clearfix text-uppercase">
                 <h1 id="logo">Albums</h1>
@@ -27,7 +28,7 @@
                 {% if "user_curr" in session %}
                     <nav>
                         <p class='login-status'>Hi {{session['user_curr']}}</p>
-                         <a class='login-status-a' href="{{ url_for('do_logout') }}">Sign out?</a>
+                        <a class='login-status-a' href="{{ url_for('do_logout') }}">Sign out?</a>
                     </nav>
                 {% else %}
                   <nav>
@@ -37,14 +38,11 @@
                 {% endif %}
             </div>
         </header>
-
-            {% block content %}{% endblock %}
-
+        {% block content %}{% endblock %}
+        <!-- footer -->
         <footer>
             <div class="container clearfix">
-                <!-- <p style='margin:0px;color:white;position:absolute;right:0;bottom:0px;'>Copyright &copy; <span class="tm-copyright-year">current year</span></p> -->
                 <p style='margin-right:30px;color:white;position:absolute;right:0;top:0px;'>Bose UI Challenge &copy; <span class="tm-copyright-year">current year</span></p>
-
             </div>
         </footer>
         <!-- Modal -->
@@ -86,16 +84,16 @@
         </div>
     </div>
     <!--   Tether   -->
-    <script type="text/javascript " src="../../static/new/js/tether.min.js?ver=0127s "></script>
-    <script type="text/javascript " src="../../static/new/js/bootstrap.min.js?ver=0127s "></script>
+    <script type="text/javascript " src="../../static/new/js/tether.min.js?ver=0215"></script>
+    <script type="text/javascript " src="../../static/new/js/bootstrap.min.js?ver=0215"></script>
     <!-- Bootstrap js v4  -->
-    <script type="text/javascript " src="../../static/new/js/jquery.magnific-popup.min.js?ver=0127s "></script>
+    <script type="text/javascript " src="../../static/new/js/jquery.magnific-popup.min.js?ver=0215"></script>
     <!-- load d3 -->
-    <script type="text/javascript " src="../../static/new/js/d3.v3.min.js?ver=0127ss "></script>
+    <script type="text/javascript " src="../../static/new/js/d3.v3.min.js?ver=0215"></script>
     <!-- Music animation -->
     <!-- load d3 -->
-    <script type="text/javascript " src="../../static/new/js/initiate.js?ver2s7s "></script>
-    <script type="text/javascript " src="../../static/new/js/ajax.js?ver=0127ss "></script>
+    <script type="text/javascript " src="../../static/new/js/initiate.js?ver=0215"></script>
+    <script type="text/javascript " src="../../static/new/js/ajax.js?ver=0215"></script>
 </body>
 
 </html>

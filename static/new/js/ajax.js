@@ -1,4 +1,4 @@
-// /***************************** Albums  ******************************/
+//# -------------- albums ----------------
 // // Add album
 $(".album_add_btn").on("click", function() {
     var album_name = $("#album_name").val();
@@ -22,6 +22,8 @@ $(".album_add_btn").on("click", function() {
                 $('#main').css('filter', 'brightness(100%)')
             }));
         }, 500);
+    } else {
+        $('#album_error').text('Please text the album name in the input.')
     }
 });
 
@@ -68,21 +70,18 @@ $(document).on("click", '#editGallerybtn', function() {
 });
 
 
-// /***************************** Photos Actions  ******************************/
-// Delete Photo Action
+//# -------------- Photo ----------------
+// Delete Photo 
 $(document).on("click", '.photo_del_btn', function() {
 
     var albumName = $(this).data("albumname");
     var photoName = $(this).data("photoname");
     var ownerName = $(this).data("ownername");
 
-
     if (albumName != "") {
         console.log('i am here')
         $("#loader-container").css('display', 'block')
         $('#main').css('filter', 'brightness(40%)')
-
-
 
         $.when($.post("/album/photos/delete", { 'albumName': albumName, 'photoName': photoName, 'ownerName': ownerName }).done(function(response) {
             var response = JSON.parse(response);
@@ -105,13 +104,3 @@ $(document).on("click", '.upload_btn', function() {
 
 });
 
-$(document).on("click", '#popImage', function() {
-    var imgSrc = $(this).data("imgsrc");
-    $('#imagepreview').attr('src', imgSrc);
-    $('#imagemodal').modal('show');
-});
-
-$('#popImage').on('click', function() {
-    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-    $('#imagemodal').modal('show');
-});

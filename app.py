@@ -14,7 +14,6 @@ from bson.objectid import ObjectId
 # -------------- class ----------------
 class Login:
 
-    # Constructor
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
@@ -51,7 +50,6 @@ class Albums:
         return albums_list
 
     def add_album(self,album_name,username):
-
         album_exit = self.db.albums.find_one({'user':username,'album':album_name})
         if album_exit:
             return {'status':False,'error':error_list[5]}
@@ -60,7 +58,6 @@ class Albums:
 
 
     def delete_album(self, album_name,username):
-
         album_exit = self.db.albums.find_one({'user':username,'album':album_name})
         if album_exit:
             self.db.albums.delete_one({'user':username,'album':album_name})
@@ -83,7 +80,6 @@ class Photos:
         self.db.authenticate('admin', 'pass')
 
     def get_photos(self, album_name,username):
-
         album=self.db.albums.find_one({'user':username,'album':album_name}, {'photos':1,'_id': 0})
         photos_list=[]
         if album:
@@ -99,7 +95,6 @@ class Photos:
     def delete_photo(self, album_name, photo_name,username):
         self.db.photos.delete_one({'_id': ObjectId(photo_name)})
         self.db.albums.update_one({ "user": username, "album": album_name},{ "$pull": { "photos": ObjectId(photo_name) } })
-        print self.db.albums.find_one({ "user": username, "album": album_name})
         return True
 
 # -------------- initiate app ----------------
@@ -107,7 +102,7 @@ class Photos:
 app = Flask(__name__)
 app.config.update(dict(SECRET_KEY='mylongsecretkeys'))
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg','png','gif' ])
-#app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024 
+# app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024 
 # something wrong with this code
 error_list=['','No selected file', 'Upload cant complete', 'Only album owner could add photos', 'Only jpg, jpeg, png and gif files are allowed',
 'The album already exists.', 'Album name is too long','User hasnt login yet.','Cant delete this albums','username has been claimed'
@@ -151,7 +146,6 @@ def register():
     if request.method == "POST":
         login_inst=Login()
         register=login_inst.register(request.form['username_reg'],request.form['password_reg'],request.form['email_reg'])
-        # if successfully register
         if register['status']:
             session['user_login'] = True
             session['user_curr'] = request.form['username_reg']
@@ -166,6 +160,7 @@ def do_logout():
     session.pop('user_login', None)
     session.pop('user_curr', None)
     return redirect(url_for('index'))
+
 
 # -------------- albums ----------------
 
@@ -206,7 +201,8 @@ def delete_album():
         return json.dumps(response)
 
 
-# -------------- Gallery photos ----------------
+# -------------- photos ----------------
+
 @app.route('/album/<album_name>/<owner_name>', methods=['GET'])
 def gallery(album_name,owner_name):
     if 'user_login' in session:
@@ -219,7 +215,6 @@ def gallery(album_name,owner_name):
         photos = photos_obj.get_photos(album_name,owner_name)
         photo_list=[]
         for photo in photos:
-            print photos
             decode=photo["img"].decode()
             img_tag = "data:image/png;base64,{0}".format(decode)
             photo_list.append({'img':img_tag,'id':photo["_id"]})
@@ -235,8 +230,8 @@ def delete_gallery_photo():
         album_name = request.form['albumName']
         photo_name = request.form['photoName']
         owner_name = request.form['ownerName']
-        
-        #if owner is current user
+
+        #if current user is the owner
         if owner_name == session['user_curr']:
             photos_obj = Photos()
             result = photos_obj.delete_photo(album_name, photo_name,owner_name)
@@ -245,7 +240,6 @@ def delete_gallery_photo():
         response = {'success': result}
         return json.dumps(response)
 
-# can only upload by owner
 @app.route('/album/<album_name>/<owner_name>/upload', methods=['POST'])
 def upload_gallery_photo(album_name,owner_name):
 
@@ -279,12 +273,19 @@ def upload_gallery_photo(album_name,owner_name):
             error_num=2
     return redirect(url_for('gallery', album_name=album_name,owner_name=owner_name,error=error_num))
 
+# -------------- others ----------------
 
 @app.route('/test', methods=['GET'])
 def test():
     albums_inst = Albums()
     albums_list = albums_inst.get_albums(session['user_curr'])
     return render_template("index-register.html")
+
+# direct every other links to the login page
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return redirect(url_for("index"))
 
 # check the file types
 def allowed_file(filename):

@@ -1,7 +1,7 @@
 $(window).load(function() {
 
     
-    /* magnificPopup pop up initiate
+    /* initiate magnificPopup
     -----------------------------------------*/
     $('.gallery').magnificPopup({
         delegate: 'a', // child items selector, by clicking on it popup will open
@@ -17,7 +17,6 @@ $(window).load(function() {
         var canvas = document.getElementsByTagName("canvas")[i];
         canvas.width = $('.grid-item').width();
         canvas.height = $('.grid-item').height();
-        //var ctx = document.getElementsByTagName("canvas")[i].getContext('2d'),
         var ctx = canvas.getContext('2d');
         image = new Image();
         (function(ctx, image) {
