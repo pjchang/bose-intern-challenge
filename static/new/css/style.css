@@ -564,7 +564,7 @@ footer ul li {
     nav .login-status-a {
         display: inline-flex;
         line-height: 90px;
-    }
+    }z
 }
 
 @media all and (max-width: 600px) {

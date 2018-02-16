@@ -30,5 +30,7 @@ $("#share_link").click(function() {
 $(".tm-copyright-year").text(new Date().getFullYear());
 
 
-
- 
+if ($(window).width() < 970) {
+    $('.btn').css('opacity',1)
+    $('.btn').css('font-size',25)
+ }
