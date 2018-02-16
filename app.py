@@ -17,7 +17,7 @@ class Login:
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
-        self.connection = MongoClient('ds023455.mlab.com', 23455)
+        self.connection = MongoClient('ds127105.mlab.com', 27105)
         self.db = self.connection['bose']
         self.db.authenticate('admin', 'pass')
 
@@ -40,7 +40,7 @@ class Albums:
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
-        self.connection = MongoClient('ds023455.mlab.com', 23455)
+        self.connection = MongoClient('ds127105.mlab.com', 27105)
         self.db = self.connection['bose']
         self.db.authenticate('admin', 'pass')
 
@@ -75,7 +75,7 @@ class Photos:
     def __init__(self):
         # self.client = MongoClient(host='localhost', port=27017)
         # self.db = self.client['Bose']
-        self.connection = MongoClient('ds023455.mlab.com', 23455)
+        self.connection = MongoClient('ds127105.mlab.com', 27105)
         self.db = self.connection['bose']
         self.db.authenticate('admin', 'pass')
 
